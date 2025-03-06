@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "./proto";
+
+// 定义聊天服务
+service ChatService {
+  // 发送私聊消息
+  rpc SendMessage (MessageRequest) returns (MessageResponse);
+
+  // 获取用户聊天历史
+  rpc GetMessageHistory (HistoryRequest) returns (stream MessageResponse);
+
+  // 发送群聊消息
+  rpc SendGroupMessage (GroupMessageRequest) returns (MessageResponse);
+
+  // 获取群聊历史消息
+  rpc GetGroupMessages (GroupHistoryRequest) returns (stream MessageResponse);
+}
+
+// 私聊消息请求
+message MessageRequest {
+  string sender = 1;
+  string receiver = 2;
+  string content = 3;
+}
+
+// 群聊消息请求
+message GroupMessageRequest {
+  string sender = 1;
+  string group_name = 2;
+  string content = 3;
+}
+
+// 私聊和群聊消息响应
+message MessageResponse {
+  string status = 1;
+  string content = 2;
+}
+
+// 获取私聊历史请求
+message HistoryRequest {
+  string user = 1;
+}
+
+// 获取群聊历史请求
+message GroupHistoryRequest {
+  string group_name = 1;
+}
